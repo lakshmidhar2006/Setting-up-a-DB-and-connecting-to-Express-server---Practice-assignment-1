@@ -1,8 +1,23 @@
+require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
 const { resolve } = require('path');
 
 const app = express();
 const port = 3010;
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('Connected to database');
+  } catch (error) {
+    console.error(`Error connecting to database: ${error.message}`);
+    process.exit(1);
+  }
+};
+
+
+connectDB();
 
 app.use(express.static('static'));
 
@@ -11,5 +26,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
